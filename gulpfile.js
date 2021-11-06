@@ -1,22 +1,25 @@
 'use strict';
 
-var gulp = require('gulp');
-var sass = require('gulp-sass')(require('sass'));
-var babel = require('gulp-babel');
-var concat = require('gulp-concat');
-var uglify = require('gulp-uglify');
-var sourcemaps = require('gulp-sourcemaps');
-var del = require('del');
+const gulp = require('gulp');
+const sass = require('gulp-sass')(require('sass'));
+const concat = require('gulp-concat');
+const uglify = require('gulp-uglify');
+const rollup = require('gulp-better-rollup');
+const babel = require('rollup-plugin-babel');
+const resolve = require('rollup-plugin-node-resolve');
+const commonjs = require('rollup-plugin-commonjs');
+const sourcemaps = require('gulp-sourcemaps');
+const del = require('del');
 
-var paths = {
+const paths = {
   styles: {
     src: 'src/sass/**/*.scss',
     maps: 'build/maps',
-    dest: 'build/css/'
+    dest: 'build/css'
   },
   scripts: {
     src: 'src/js/**/*.js',
-    dest: 'build/scripts/'
+    dest: 'build/js'
   }
 };
 
@@ -31,7 +34,7 @@ function styles() {
 
 function scripts() {
   return gulp.src(paths.scripts.src, { sourcemaps: true })
-    .pipe(babel())
+    .pipe(rollup({ plugins: [babel(), resolve(), commonjs()] }, 'umd'))
     .pipe(uglify())
     .pipe(concat('main.min.js'))
     .pipe(gulp.dest(paths.scripts.dest));
