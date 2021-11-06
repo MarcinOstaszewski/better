@@ -27,8 +27,10 @@
     align-items: end;
 }
 .space-between {
-    align-content: space-between;
+    display: flex;
+    justify-content: space-between;
 }
 .space-evenly {
-    align-content: space-evenly;
+    display: flex;
+    justify-content: space-evenly;
 }

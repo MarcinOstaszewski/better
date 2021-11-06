@@ -11,9 +11,17 @@ body {
 * {
     font-size: 16px;
     font-family: $primary-font;
+    font-weight: $font-weight-base;
 }
 
-.container,
+.container {
+    width: 100%;
+    max-width: $break-point;
+    overflow-x: hidden;
+    @media screen and (min-width: $break-point) {
+        width: $break-point;
+    }
+}
 .row {
     display: flex;
     width: 100%;
@@ -65,7 +73,7 @@ body {
                 .desktop {
                     display: none;
                 }
-                @media screen and (min-width: 768px) {
+                @media screen and (min-width: $break-point) {
                     width: 160px;
                     .mobile {
                         display: none;
@@ -81,6 +89,25 @@ body {
                     justify-content: space-around;
                     align-items: center;
                 }
+                &-title {
+                    height: 24px;
+                    font-size: 12px;
+                    text-align: center;
+                    @media screen and (min-width: $break-point) {
+                        font-size: 16px;
+                    }
+                }
+                &-content {
+                    height: $column-high;
+                    @media screen and (min-width: $break-point) {
+                        height: $column-low;
+                    }
+                    padding: 8px;
+                    div {
+                        font-family: $secondary-font;
+                        font-weight: $font-weight-bold;
+                    }
+                }
             }
             &-main-date {
                 height: 24px;
@@ -92,24 +119,79 @@ body {
             }
             &-main-content {
                 font-size: 16px;
-                height: 100px;
+                height: $column-high;
+                @media screen and (min-width: $break-point) {
+                    height: $column-low;
+                }
                 justify-content: space-around;
                 border: 1px solid $box-border-color;
                 padding: 8px;
                 text-transform: uppercase;
-            }
-            &-consensus-title {
-                height: 24px;
-                font-size: 12px;
-                @media screen and (min-width: 768px) {
-                    font-size: 16px;
+                div {
+                    overflow-y: clip;
+                    height: 25px;
+                    text-overflow: ellipsis;
                 }
             }
-            &-consensus-content {
-                height: 100px;
-                padding: 8px;
+
+        }
+        .slider-box {
+            position: relative;
+            overflow-x: hidden;
+            width: 100%;
+        }
+        .slider {
+            position: absolute;
+            left: 0px;
+            &-column {
+                width: 60px;
+                @media screen and (min-width: $break-point) {
+                    width: 120px;
+                }
+                .column-title {
+                    height: 24px;
+                    img {
+                        width: 60px;
+                        height: 24px;
+                        border-radius: 3px;
+                        @media screen and (min-width: $break-point) {
+                            width: 120px;
+                        }
+                    }
+                }
+                .column-scores {
+                    padding: 8px;
+                    height: $column-high;
+                    border-top: 2px solid transparent;
+                    border-bottom: 2px solid transparent;
+                    @media screen and (min-width: $break-point) {
+                        height: $column-low;
+                    }
+                    border: 1px solid #e8e8e8;
+                    justify-content: space-around;
+                    .scores-field {
+                        display: flex;
+                        justify-content: space-evenly;
+                        flex-direction: column;
+                        @media screen and (min-width: $break-point) {
+                            flex-direction: row;
+                        }
+                    }
+                    div {
+                        font-family: $secondary-font;
+                    }
+                    .line {
+                        font-weight: $font-weight-bold;
+                    }
+                    .odds {
+                        color: $font-color-gray;
+                    }
+                    &.highlight {
+                        border-top: 2px solid $yellow-color;
+                        border-bottom: 2px solid $yellow-color;
+                    }
+                }
             }
         }
-
     }
 }
