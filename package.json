@@ -1,0 +1,25 @@
+{
+  "name": "odds_table",
+  "version": "1.0.0",
+  "description": "odds_table_challenge",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "bets"
+  ],
+  "author": "MarcinOstaszewski",
+  "license": "ISC",
+  "devDependencies": {
+    "concat": "^1.0.3",
+    "gulp-sass": "^5.0.0",
+    "sass": "^1.43.4",
+    "uglify": "^0.1.5"
+  },
+  "dependencies": {
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
+    "gulp-sourcemaps": "^3.0.0"
+  }
+}
