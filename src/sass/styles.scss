@@ -1,0 +1,9 @@
+$font-color-black: #000;
+$font-color-gray: #6c757d;
+$box-border-color: #e8e8e8;
+$yellow-color: #fcc138;
+
+.test {
+    color: $font-color-black;
+    border: 1px solid $box-border-color;
+}
