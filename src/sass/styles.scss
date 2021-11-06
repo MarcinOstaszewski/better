@@ -1,9 +1,115 @@
-$font-color-black: #000;
-$font-color-gray: #6c757d;
-$box-border-color: #e8e8e8;
-$yellow-color: #fcc138;
+@import './reset';
+@import './variables';
+@import './utils';
+@import './flexbox';
 
-.test {
+body {
+    margin: 10px;
+    background-color: $white-color;
     color: $font-color-black;
-    border: 1px solid $box-border-color;
+}
+* {
+    font-size: 16px;
+    font-family: $primary-font;
+}
+
+.container,
+.row {
+    display: flex;
+    width: 100%;
+}
+.select {
+    padding: 8px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    border-color: $box-border-color;
+    &__format {
+        width: 200px;
+    }
+}
+
+.arrow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid $font-color-black;
+
+    .chevron {
+        display: inline-block;
+        border-right: 2px solid $font-color-black;
+        border-bottom: 2px solid $font-color-black;
+        width: 8px;
+        height: 8px;
+        transform: rotate(-225deg);
+    }
+    .chevron.right {
+        transform: rotate(-45deg);
+    }
+}
+.tables {
+    &-row-title {
+        text-transform: uppercase;
+        font-size: 24px;
+    }
+    &-row-content {
+        font-size: 16px;
+        .head {
+            &-main {
+                width: 60px;
+                .mobile {
+                    display: block
+                }
+                .desktop {
+                    display: none;
+                }
+                @media screen and (min-width: 768px) {
+                    width: 160px;
+                    .mobile {
+                        display: none;
+                    }
+                    .desktop {
+                        display: block;
+                    }
+                }
+            }
+            &-consensus {
+                width: 80px;
+                div {
+                    justify-content: space-around;
+                    align-items: center;
+                }
+            }
+            &-main-date {
+                height: 24px;
+                color: $font-color-gray;
+                div {
+                    font-family: $secondary-font;
+                    font-size: 12px;
+                }
+            }
+            &-main-content {
+                font-size: 16px;
+                height: 100px;
+                justify-content: space-around;
+                border: 1px solid $box-border-color;
+                padding: 8px;
+                text-transform: uppercase;
+            }
+            &-consensus-title {
+                height: 24px;
+                font-size: 12px;
+                @media screen and (min-width: 768px) {
+                    font-size: 16px;
+                }
+            }
+            &-consensus-content {
+                height: 100px;
+                padding: 8px;
+            }
+        }
+
+    }
 }
