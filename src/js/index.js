@@ -11,6 +11,7 @@ const buildTable = (tableData) => {
     }
 
     tableData.rows.forEach(row => {
+        // create header content
         const headMain = `
             <div class="head-main">
                 <div class="head-main-date d-flex align-items-end">
@@ -38,29 +39,75 @@ const buildTable = (tableData) => {
         const head = createDivWithClassName('head d-flex');
         head.innerHTML = (headMain + headConsensus).trim();
 
+        // create slider content
+        const slider = createDivWithClassName('slider d-flex');
+
+        row.bookmakers.forEach( bookmaker => {
+            // attach a column for each bookmaker
+            const overLine = bookmaker.over.line ? `<div class="line">${bookmaker.over.line}</div>` : '';
+            const underLine = bookmaker.under.line ? `<div class="line">${bookmaker.under.line}</div>` : '';
+            const highlight = bookmaker.isMax ? 'highlight' : '';
+            const sliderColumn = `
+                <div class="slider-column flex-column ml-2">
+                    <div class="column-title">
+                        <img src="${bookmaker.logoUrl}" alt="${bookmaker.title}" width="180px" height="24px" />
+                    </div>
+                    <div class="column-scores flex-column mt-2 ${highlight}">
+                        <div class="scores-field scores-over">
+                            ${overLine}
+                            <div class="odds">${bookmaker.over.odds}</div>
+                        </div>
+                        <div class="scores-field scores-under">
+                            ${underLine}
+                            <div class="odds">${bookmaker.under.odds}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            slider.innerHTML += sliderColumn.trim();
+        })
+
+        // create row content, then attach header and slider
         const content = createDivWithClassName('tables-row-content d-flex');
-        content.appendChild(head)
+        const sliderBox = createDivWithClassName('slider-box');
+        sliderBox.appendChild(slider);
+        content.appendChild(head);
+        content.appendChild(sliderBox);
 
+        // create row element and title, then attach title and content
+        const rowElem = createDivWithClassName('tables-row row flex-column mb-4');
         const title = createDivWithClassName('tables-row-title');
-        const elem = createDivWithClassName('tables-row row flex-column mb-4');
-        elem.appendChild(title);
-        elem.appendChild(content);
-
         title.innerText = row.rowTitle + ' odds';
+        rowElem.appendChild(title);
+        rowElem.appendChild(content);
 
-
-
-
-
-
-
-
-        const contentSlider = createDivWithClassName('tables-row-content-slider')
-
-
-        tables.appendChild(elem);
+        tables.appendChild(rowElem);
     });
 }
 
-document.addEventListener('DOMContentLoaded', buildTable(tableData));
+const sliderArrows = (className) => {
+    const arrows = document.getElementsByClassName(className);
+    const sliders = document.getElementsByClassName('slider');
+    [].slice.apply(sliders).forEach( slider => {
+        slider.style.position = 'absolute';
+        slider.style.left = '0px';
+        console.log(slider.style.left);
+    });
+
+    [].slice.apply(arrows).forEach( arrow => {
+        arrow.addEventListener('click', e => {
+            [].slice.apply(sliders).forEach( slider => {
+                const dir = e.target.closest('.arrow').dataset.direction === 'right';
+                let left = parseInt(slider.style.left);
+                left += (dir ? 60 : -60);
+                slider.style.left = left + 'px';
+            })
+        });
+    })
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    buildTable(tableData);
+    sliderArrows('arrow');
+});
 
