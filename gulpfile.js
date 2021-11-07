@@ -24,6 +24,7 @@ const paths = {
 };
 
 function styles() {
+  del([paths.styles.dest]);
   return gulp.src(paths.styles.src)
     .pipe(sourcemaps.init())
     .pipe(sass.sync({outputStyle: 'compressed'})
@@ -33,8 +34,9 @@ function styles() {
 };
 
 function scripts() {
+  del([paths.scripts.dest]);
   return gulp.src(paths.scripts.src, { sourcemaps: true })
-    .pipe(rollup({ plugins: [babel(), resolve(), commonjs()] }, 'umd'))
+    // .pipe(rollup({ plugins: [babel(), resolve(), commonjs()] }, 'umd'))
     .pipe(uglify())
     .pipe(concat('main.min.js'))
     .pipe(gulp.dest(paths.scripts.dest));
@@ -44,12 +46,6 @@ function watch() {
   gulp.watch(paths.scripts.src, scripts);
   gulp.watch(paths.styles.src, styles);
 }
-
-function clean() {
-  del([ dir.build ]);
-}
-
-var build = gulp.series(clean, gulp.parallel(styles, scripts));
 
 exports.clean = clean;
 exports.styles = styles;
