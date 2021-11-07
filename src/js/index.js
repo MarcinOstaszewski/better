@@ -1,6 +1,8 @@
-const breakPoint = 768;
+'use strict';
 
+const breakPoint = 768;
 let lastWindowWidth = window.innerWidth;
+let offsetValue = 136;
 
 const createDivWithClassName = (className) => {
     const el = document.createElement('div');
@@ -98,11 +100,11 @@ const handleScreenWidthChange = () => {
     const windowWidthCrossedBreakPoint = (lastWindowWidth > breakPoint && window.innerWidth < breakPoint ||
         lastWindowWidth < breakPoint && window.innerWidth > breakPoint);
     if (windowWidthCrossedBreakPoint) {
-            setSlidersOffset(0);
-            disableArrows();
-            updateArrows(0);
-            lastWindowWidth = window.innerWidth;
-        }
+        setSlidersOffset(0);
+        disableArrows();
+        updateArrows(0);
+        lastWindowWidth = window.innerWidth;
+    }
 }
 
 const getByClass = className => [].slice.apply(document.getElementsByClassName(className));
@@ -125,7 +127,7 @@ const updateArrows = (offsetLeft) => {
 
 const animateSliders = (sliders, multiplier) => {
     disableArrows();
-    const targetLeft = (parseInt(sliders[0].style.left) || 0) + 136 * multiplier;
+    const targetLeft = (parseInt(sliders[0].style.left) || 0) + offsetValue * multiplier;
 
     const animate = () => {
         const currLeft = parseInt(sliders[0].style.left) || 0;
