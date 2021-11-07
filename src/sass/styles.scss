@@ -16,11 +16,7 @@ body {
 
 .container {
     width: 100%;
-    max-width: $break-point;
     overflow-x: hidden;
-    @media screen and (min-width: $break-point) {
-        width: $break-point;
-    }
 }
 .row {
     display: flex;
@@ -55,6 +51,14 @@ body {
     }
     .chevron.right {
         transform: rotate(-45deg);
+    }
+    &.disabled {
+        border: 2px solid rgba($font-color-gray, .3);
+        pointer-events: none;
+        .chevron {
+            border-right: 2px solid rgba($font-color-gray, .3);
+            border-bottom: 2px solid rgba($font-color-gray, .3);
+        }
     }
 }
 .tables {
@@ -133,7 +137,6 @@ body {
                     text-overflow: ellipsis;
                 }
             }
-
         }
         .slider-box {
             position: relative;
@@ -145,8 +148,10 @@ body {
             left: 0px;
             &-column {
                 width: 60px;
+                margin-left: 8px;
                 @media screen and (min-width: $break-point) {
                     width: 120px;
+                    margin-left: 16px;
                 }
                 .column-title {
                     height: 24px;

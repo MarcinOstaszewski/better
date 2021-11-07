@@ -1,14 +1,16 @@
-const { tableData } = require("./tableData");
+const breakPoint = 768;
+
+let lastWindowWidth = window.innerWidth;
+
+const createDivWithClassName = (className) => {
+    const el = document.createElement('div');
+    el.className = className;
+    return el;
+}
 
 const buildTable = (tableData) => {
     const tables = document.getElementById('tables');
     const date = tableData.date;
-
-    const createDivWithClassName = (className) => {
-        const el = document.createElement('div');
-        el.className = className;
-        return el;
-    }
 
     tableData.rows.forEach(row => {
         // create header content
@@ -46,13 +48,13 @@ const buildTable = (tableData) => {
             // attach a column for each bookmaker
             const overLine = bookmaker.over.line ? `<div class="line">${bookmaker.over.line}</div>` : '';
             const underLine = bookmaker.under.line ? `<div class="line">${bookmaker.under.line}</div>` : '';
-            const highlight = bookmaker.isMax ? 'highlight' : '';
+            const highlight = bookmaker.isMax ? ' highlight' : '';
             const sliderColumn = `
-                <div class="slider-column flex-column ml-2">
+                <div class="slider-column flex-column">
                     <div class="column-title">
                         <img src="${bookmaker.logoUrl}" alt="${bookmaker.title}" width="180px" height="24px" />
                     </div>
-                    <div class="column-scores flex-column mt-2 ${highlight}">
+                    <div class="column-scores flex-column mt-2${highlight}">
                         <div class="scores-field scores-over">
                             ${overLine}
                             <div class="odds">${bookmaker.over.odds}</div>
@@ -85,29 +87,80 @@ const buildTable = (tableData) => {
     });
 }
 
-const sliderArrows = (className) => {
-    const arrows = document.getElementsByClassName(className);
-    const sliders = document.getElementsByClassName('slider');
-    [].slice.apply(sliders).forEach( slider => {
-        slider.style.position = 'absolute';
-        slider.style.left = '0px';
-        console.log(slider.style.left);
+const setSlidersOffset = offset => {
+    const sliders = getByClass('slider');
+    sliders.forEach(slider => {
+        slider.style.left = (offset) + 'px';
     });
+}
 
-    [].slice.apply(arrows).forEach( arrow => {
+const handleScreenWidthChange = () => {
+    const windowWidthCrossedBreakPoint = (lastWindowWidth > breakPoint && window.innerWidth < breakPoint ||
+        lastWindowWidth < breakPoint && window.innerWidth > breakPoint);
+    if (windowWidthCrossedBreakPoint) {
+            setSlidersOffset(0);
+            disableArrows();
+            updateArrows(0);
+            lastWindowWidth = window.innerWidth;
+        }
+}
+
+const getByClass = className => [].slice.apply(document.getElementsByClassName(className));
+
+const disableArrows = () => {
+    getByClass('arrow').forEach( a => a.classList.add('disabled') );
+}
+
+const updateArrows = (offsetLeft) => {
+    const arrows = getByClass('arrow');
+    const slider = getByClass('slider')[0];
+    const box = getByClass('slider-box')[0];
+    if (box.offsetWidth - offsetLeft < slider.offsetWidth) {
+        arrows[0].classList.remove('disabled');
+    }
+    if (box.offsetWidth - offsetLeft > box.offsetWidth) {
+        arrows[1].classList.remove('disabled');
+    }
+}
+
+const animateSliders = (sliders, multiplier) => {
+    disableArrows();
+    const targetLeft = (parseInt(sliders[0].style.left) || 0) + 136 * multiplier;
+
+    const animate = () => {
+        const currLeft = parseInt(sliders[0].style.left) || 0;
+        const offsetNotReached = multiplier < 0 && targetLeft < currLeft || multiplier > 0 && targetLeft > currLeft;
+        if (offsetNotReached) {
+            setSlidersOffset(currLeft + (4 * multiplier));
+        } else {
+            clearInterval(id);
+            updateArrows(targetLeft);
+        }
+    }
+
+    let id = window.setInterval(animate, 5);
+}
+
+const initArrows = () => {
+    const arrows = getByClass('arrow');
+    const sliders = getByClass('slider');
+    if (arrows.length === 0 || sliders.length === 0) {
+        return;
+    }
+    arrows.forEach( arrow => {
         arrow.addEventListener('click', e => {
-            [].slice.apply(sliders).forEach( slider => {
-                const dir = e.target.closest('.arrow').dataset.direction === 'right';
-                let left = parseInt(slider.style.left);
-                left += (dir ? 60 : -60);
-                slider.style.left = left + 'px';
-            })
+            const multiplier = parseInt(e.target.closest('.arrow').dataset.multiplier);
+            animateSliders(sliders, multiplier);
         });
-    })
+    });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     buildTable(tableData);
-    sliderArrows('arrow');
+    initArrows();
+    disableArrows();
+    updateArrows(0);
+    window.addEventListener('resize', () => {
+        handleScreenWidthChange();
+    });
 });
-

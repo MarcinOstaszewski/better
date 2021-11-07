@@ -13,14 +13,14 @@
     <div class="container flex-column">
         <div class="row justify-content-end">
             <select name="format" class="select select__format" id="format-select">
-                <option value="american">American odds</option>
                 <option value="decimal">Decimal odds</option>
+                <option value="american">American odds</option>
             </select>
             <div class="d-flex align-items-center ml-2">
-                <div data-direction="left" class="arrow ml-2">
+                <div data-multiplier="-1" class="arrow ml-2">
                     <div class="chevron"></div>
                 </div>
-                <div data-direction="right" class="arrow ml-2">
+                <div data-multiplier="1" class="arrow ml-2">
                     <div class="chevron right"></div>
                 </div>
             </div>
