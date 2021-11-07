@@ -4,14 +4,27 @@
 @import './flexbox';
 
 body {
-    margin: 10px;
+    margin: $s-3;
     background-color: $white-color;
     color: $font-color-black;
 }
 * {
-    font-size: 16px;
+    font-size: $s-4;
     font-family: $primary-font;
     font-weight: $font-weight-base;
+}
+
+::-webkit-scrollbar {
+    height: $s-1;
+}
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+    background: #bbb;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #888;
 }
 
 .container {
@@ -23,12 +36,23 @@ body {
     width: 100%;
 }
 .select {
-    padding: 8px;
-    border-radius: 3px;
+    padding: $s-2;
+    border-radius: $s-1;
     text-transform: uppercase;
     border-color: $box-border-color;
     &__format {
-        width: 200px;
+        width: 100%;
+        transition: width .3s;
+        @media screen and (min-width: $break-point) {
+            width: $w-xxl;
+            transition: width .3s;
+        }
+    }
+}
+.arrows-container {
+    display: none;
+    @media screen and (min-width: $break-point) {
+        display: flex;
     }
 }
 
@@ -36,41 +60,47 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 24px;
-    height: 24px;
+    width: $s-5;
+    height: $s-5;
     border-radius: 50%;
-    border: 2px solid $font-color-black;
+    border: $border-bold solid $font-color-black;
 
     .chevron {
         display: inline-block;
-        border-right: 2px solid $font-color-black;
-        border-bottom: 2px solid $font-color-black;
-        width: 8px;
-        height: 8px;
+        border-right: $border-bold solid $font-color-black;
+        border-bottom: $border-bold solid $font-color-black;
+        width: $s-2;
+        height: $s-2;
         transform: rotate(-225deg);
     }
     .chevron.right {
         transform: rotate(-45deg);
     }
     &.disabled {
-        border: 2px solid rgba($font-color-gray, .3);
+        border: $border-bold solid rgba($font-color-gray, .3);
         pointer-events: none;
         .chevron {
-            border-right: 2px solid rgba($font-color-gray, .3);
-            border-bottom: 2px solid rgba($font-color-gray, .3);
+            border-right: $border-bold solid rgba($font-color-gray, .3);
+            border-bottom: $border-bold solid rgba($font-color-gray, .3);
         }
     }
 }
+
 .tables {
     &-row-title {
         text-transform: uppercase;
-        font-size: 24px;
+        font-size: $s-5;
+        margin-bottom: $s-4;
+        @media screen and (min-width: $break-point) {
+            margin-bottom: $s-2;
+        }
     }
     &-row-content {
-        font-size: 16px;
+        font-size: $s-4;
         .head {
             &-main {
-                width: 60px;
+                width: $w-sm;
+                transition: width .3s;
                 .mobile {
                     display: block
                 }
@@ -78,7 +108,8 @@ body {
                     display: none;
                 }
                 @media screen and (min-width: $break-point) {
-                    width: 160px;
+                    width: $w-xl;
+                    transition: width .3s;
                     .mobile {
                         display: none;
                     }
@@ -88,17 +119,17 @@ body {
                 }
             }
             &-consensus {
-                width: 80px;
+                width: $w-md;
                 div {
                     justify-content: space-around;
                     align-items: center;
                 }
                 &-title {
-                    height: 24px;
-                    font-size: 12px;
+                    height: $s-5;
+                    font-size: $s-3;
                     text-align: center;
                     @media screen and (min-width: $break-point) {
-                        font-size: 16px;
+                        font-size: $s-4;
                     }
                 }
                 &-content {
@@ -106,7 +137,7 @@ body {
                     @media screen and (min-width: $break-point) {
                         height: $column-low;
                     }
-                    padding: 8px;
+                    padding: $s-2;
                     div {
                         font-family: $secondary-font;
                         font-weight: $font-weight-bold;
@@ -114,22 +145,22 @@ body {
                 }
             }
             &-main-date {
-                height: 24px;
+                height: $s-5;
                 color: $font-color-gray;
                 div {
                     font-family: $secondary-font;
-                    font-size: 12px;
+                    font-size: $s-3;
                 }
             }
             &-main-content {
-                font-size: 16px;
+                font-size: $s-4;
                 height: $column-high;
                 @media screen and (min-width: $break-point) {
                     height: $column-low;
                 }
                 justify-content: space-around;
-                border: 1px solid $box-border-color;
-                padding: 8px;
+                border: $border-thin solid $box-border-color;
+                padding: $s-2;
                 text-transform: uppercase;
                 div {
                     overflow-y: clip;
@@ -144,40 +175,51 @@ body {
             width: 100%;
         }
         .slider {
-            position: absolute;
-            left: 0px;
+            overflow: auto;
+            // position: relative;
+            @media screen and (min-width: $break-point) {
+                overflow: hidden;
+                position: absolute;
+                left: 0px;
+            }
             &-column {
-                width: 60px;
-                margin-left: 8px;
+                min-width: $w-sm;
+                transition: width .3s;
+                margin-left: $s-2;
                 @media screen and (min-width: $break-point) {
-                    width: 120px;
-                    margin-left: 16px;
+                    width: $w-lg;
+                    transition: width .3s;
+                    margin-left: $s-4;
                 }
                 .column-title {
-                    height: 24px;
+                    height: $s-5;
                     img {
-                        width: 60px;
-                        height: 24px;
-                        border-radius: 3px;
+                        width: $w-sm;
+                        height: $s-5;
+                        border-radius: $s-1;
                         @media screen and (min-width: $break-point) {
-                            width: 120px;
+                            width: $w-lg;
                         }
                     }
                 }
                 .column-scores {
-                    padding: 8px;
+                    padding: $s-2;
                     height: $column-high;
-                    border-top: 2px solid transparent;
-                    border-bottom: 2px solid transparent;
+                    border-top: $border-bold solid transparent;
+                    border-bottom: $border-bold solid transparent;
                     @media screen and (min-width: $break-point) {
                         height: $column-low;
                     }
-                    border: 1px solid #e8e8e8;
+                    border: $border-thin solid #e8e8e8;
                     justify-content: space-around;
                     .scores-field {
                         display: flex;
                         justify-content: space-evenly;
                         flex-direction: column;
+                        div {
+                            display: flex;
+                            justify-content: end;
+                        }
                         @media screen and (min-width: $break-point) {
                             flex-direction: row;
                         }
@@ -192,8 +234,8 @@ body {
                         color: $font-color-gray;
                     }
                     &.highlight {
-                        border-top: 2px solid $yellow-color;
-                        border-bottom: 2px solid $yellow-color;
+                        border-top: $border-bold solid $yellow-color;
+                        border-bottom: $border-bold solid $yellow-color;
                     }
                 }
             }
